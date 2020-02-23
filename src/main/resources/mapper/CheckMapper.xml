@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.example.kaoqin.mapper.CheckMapper">
+    <resultMap id="BaseResultMap" type="com.example.kaoqin.entity.Check">
+        <id column="id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="number" property="number"/>
+        <result column="age" property="age"/>
+        <result column="check_in_time" property="checkInTime"/>
+        <result column="check_out_time" property="checkOutTime"/>
+        <result column="duration" property="duration"/>
+    </resultMap>
+
+    <select id="findById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+        SELECT
+            id, name, number, age, check_in_time, check_out_time, duration
+        FROM
+            `check` 
+        WHERE
+            id = #{id}
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.Long">
+       DELETE 
+       FROM
+         `check` 
+       WHERE
+         id = #{id}
+    </delete>
+
+    <insert id="insert" parameterType="com.example.kaoqin.entity.Check" useGeneratedKeys="true" keyProperty="checkId">
+       INSERT INTO `check`
+        (name, number, age, check_in_time, check_out_time, duration)
+        VALUES
+	    ( #{name}, #{number}, #{age}, #{checkInTime}, #{checkOutTime}, #{duration})
+    </insert>
+
+    <update id="update" parameterType="com.example.kaoqin.entity.Check">
+        update
+        `check`
+        <set>
+            <if test="name != null and name != ''">name = #{name},</if>
+            <if test="number != null and number != ''">number = #{number},</if>
+            <if test="age != null">age = #{age},</if>
+            <if test="checkInTime != null">check_in_time = #{checkInTime},</if>
+            <if test="checkOutTime != null">check_out_time = #{checkOutTime},</if>
+            <if test="duration != null">duration = #{duration},</if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="findAll" parameterType="com.example.kaoqin.entity.Check" resultMap="BaseResultMap">
+        SELECT
+            id, name, number, age, check_in_time, check_out_time, duration
+        FROM
+            `check`
+        ORDER BY id DESC
+    </select>
+
+    <select id="findByName" resultMap="BaseResultMap">
+         SELECT
+            id, name, number, age, check_in_time, check_out_time, duration
+        FROM
+            `check`
+        WHERE
+            name LIKE CONCAT('%',#{name},'%')
+        ORDER BY id DESC
+    </select>
+
+
+</mapper>
